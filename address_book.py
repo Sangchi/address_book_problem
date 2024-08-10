@@ -1,12 +1,11 @@
 '''
-Ability to get number
-of contact persons i.e.
-count by City or State
+Ability to sort the entries in the
+address book alphabetically by
+Person’s name
 
 '''
 
 def create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email):
-
     return {
         "First Name": first_name,
         "Last Name": last_name,
@@ -19,7 +18,6 @@ def create_contact(first_name, last_name, address, city, state, zip_code, phone_
     }
 
 def add_contact(address_book):
-
     print("Adding a new contact...")
     first_name = input("Enter first name: ")
     last_name = input("Enter last name: ")
@@ -34,20 +32,12 @@ def add_contact(address_book):
     address_book.append(contact)
     print("Contact added successfully!")
 
-
 def display_contacts(address_book):
-
-    print("Address Book:")
     if not address_book:
         print("No contacts found!")
         return
 
-    for idx, contact in enumerate(address_book):
-        print(f"Contact {idx + 1}:")
-        for key, value in contact.items():
-            print(f"  {key}: {value}")
-        print()
-
+    sort_contacts_by_name(address_book)
 
 def edit_contact(address_book):
 
@@ -76,7 +66,6 @@ def edit_contact(address_book):
     if not contact_found:
         print("Contact not found.")
 
-
 def delete_contact(address_book):
 
     search_name = input("Enter the first name of the contact to delete: ")
@@ -92,7 +81,6 @@ def delete_contact(address_book):
 
     if not contact_found:
         print("Contact not found.")
-
 
 def add_multiple_contacts(address_book):
 
@@ -115,7 +103,6 @@ def add_multiple_contacts(address_book):
             address_book.append(contact)
             print("Contact added successfully!")
 
-
 def add_address_book(address_books):
 
     name = input("Enter the name for the new address book: ")
@@ -124,7 +111,6 @@ def add_address_book(address_books):
     else:
         address_books[name] = []
         print(f"Address book '{name}' created successfully!")
-
 
 def switch_address_book(address_books):
 
@@ -138,7 +124,6 @@ def switch_address_book(address_books):
     else:
         print("Address book not found.")
         return None
-
 
 def search_or_count_person(address_book):
 
@@ -184,6 +169,18 @@ def search_or_count_person(address_book):
 
     else:
         print("Invalid option.")
+
+def sort_contacts_by_name(address_book):
+
+    address_book.sort(key=lambda x: (x["First Name"].lower(), x["Last Name"].lower()))
+    print("Address Book:")
+    for idx, contact in enumerate(address_book):
+        print(f"Contact {idx + 1}:")
+        for key, value in contact.items():
+            print(f"  {key}: {value}")
+        print()
+
+
 
 def main():
 
