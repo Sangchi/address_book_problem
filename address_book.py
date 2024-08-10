@@ -1,7 +1,7 @@
 '''
 Ability to sort the entries in
 the address book by City,
-State, or Zip
+State, or Zip twelve usescase
 
 '''
 
@@ -210,7 +210,6 @@ def sort_contacts_by_state(address_book):
 def sort_contacts_by_zip(address_book):
 
     address_book.sort(key=lambda x: x["Zip Code"].lower())
-
 
 def main():
 
