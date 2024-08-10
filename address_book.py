@@ -1,11 +1,12 @@
 '''
-Ability to sort the entries in the
-address book alphabetically by
-Person’s name
+Ability to sort the entries in
+the address book by City,
+State, or Zip
 
 '''
 
 def create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email):
+
     return {
         "First Name": first_name,
         "Last Name": last_name,
@@ -18,6 +19,7 @@ def create_contact(first_name, last_name, address, city, state, zip_code, phone_
     }
 
 def add_contact(address_book):
+
     print("Adding a new contact...")
     first_name = input("Enter first name: ")
     last_name = input("Enter last name: ")
@@ -32,12 +34,32 @@ def add_contact(address_book):
     address_book.append(contact)
     print("Contact added successfully!")
 
+
 def display_contacts(address_book):
+
     if not address_book:
         print("No contacts found!")
         return
 
-    sort_contacts_by_name(address_book)
+    sort_choice = input("Sort by (1) Name, (2) City, (3) State, (4) Zip Code: ")
+
+    if sort_choice == "1":
+        sort_contacts_by_name(address_book)
+    elif sort_choice == "2":
+        sort_contacts_by_city(address_book)
+    elif sort_choice == "3":
+        sort_contacts_by_state(address_book)
+    elif sort_choice == "4":
+        sort_contacts_by_zip(address_book)
+    else:
+        print("Invalid choice. Displaying contacts without sorting.")
+
+    print("Address Book:")
+    for idx, contact in enumerate(address_book):
+        print(f"Contact {idx + 1}:")
+        for key, value in contact.items():
+            print(f"  {key}: {value}")
+        print()
 
 def edit_contact(address_book):
 
@@ -101,20 +123,20 @@ def add_multiple_contacts(address_book):
         else:
             contact = create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email)
             address_book.append(contact)
-            print("Contact added successfully!")
+            print("contact added successfully!")
 
 def add_address_book(address_books):
 
     name = input("Enter the name for the new address book: ")
     if name in address_books:
-        print("An address book with this name already exists.")
+        print("an address book with this name already exists.")
     else:
         address_books[name] = []
-        print(f"Address book '{name}' created successfully!")
+        print(f"address book '{name}' created successfully!")
 
 def switch_address_book(address_books):
 
-    print("Available address books:")
+    print("available address books:")
     for name in address_books:
         print(f"- {name}")
 
@@ -122,8 +144,9 @@ def switch_address_book(address_books):
     if name in address_books:
         return address_books[name]
     else:
-        print("Address book not found.")
+        print("address book not found.")
         return None
+
 
 def search_or_count_person(address_book):
 
@@ -173,13 +196,20 @@ def search_or_count_person(address_book):
 def sort_contacts_by_name(address_book):
 
     address_book.sort(key=lambda x: (x["First Name"].lower(), x["Last Name"].lower()))
-    print("Address Book:")
-    for idx, contact in enumerate(address_book):
-        print(f"Contact {idx + 1}:")
-        for key, value in contact.items():
-            print(f"  {key}: {value}")
-        print()
 
+
+def sort_contacts_by_city(address_book):
+
+    address_book.sort(key=lambda x: x["City"].lower())
+
+
+def sort_contacts_by_state(address_book):
+
+    address_book.sort(key=lambda x: x["State"].lower())
+
+def sort_contacts_by_zip(address_book):
+
+    address_book.sort(key=lambda x: x["Zip Code"].lower())
 
 
 def main():
