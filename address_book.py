@@ -1,8 +1,7 @@
 '''
-Ability to edit
-existing contact
-person using their
-name
+Ability to delete a 
+person using 
+person's name - Use Console to delete a person
 
 '''
 
@@ -43,6 +42,10 @@ def display_contacts(address_book):
         for key, value in contact.items():
             print(f"  {key}: {value}")
         print()
+    if not address_book:
+        print("data is not found!!")
+
+    print()
 
 
 def edit_contact(address_book):
@@ -72,7 +75,21 @@ def edit_contact(address_book):
     if not contact_found:
         print("Contact not found.")
 
+def delete_contact(address_book):
 
+    search_name = input("Enter the first name of the contact to delete: ")
+    search_last_name = input("Enter the last name of the contact to delete: ")
+
+    contact_found = False
+    for contact in address_book:
+        if contact["First Name"].lower() == search_name.lower() and contact["Last Name"].lower() == search_last_name.lower():
+            address_book.remove(contact)
+            contact_found = True
+            print("Contact deleted successfully!")
+            break
+
+    if not contact_found:
+        print("Contact not found.")
 
 def main():
 
@@ -82,9 +99,10 @@ def main():
         print("1. Add a new contact")
         print("2. Display all contacts")
         print("3. Edit an existing contact")
-        print("4. Exit")
+        print("4. delete the contact")
+        print("5.exit")
 
-        choice = input("Choose an option (1/2/3/4): ")
+        choice = input("Choose an option (1/2/3/4/5): ")
 
         if choice == "1":
             add_contact(address_book)
@@ -93,16 +111,14 @@ def main():
         elif choice == "3":
             edit_contact(address_book)
         elif choice == "4":
-            print("Exiting the program.")
+            delete_contact(address_book)
+
+        elif choice=="5":
+            print("exit the program")
             break
         else:
             print("Invalid choice. Please choose again.")
 
 
-
 if __name__ == '__main__':
     main()
-
-
-
-
