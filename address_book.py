@@ -1,6 +1,7 @@
 '''
-Ability to view Persons
-by City or State
+Ability to get number
+of contact persons i.e.
+count by City or State
 
 '''
 
@@ -33,6 +34,7 @@ def add_contact(address_book):
     address_book.append(contact)
     print("Contact added successfully!")
 
+
 def display_contacts(address_book):
 
     print("Address Book:")
@@ -45,6 +47,7 @@ def display_contacts(address_book):
         for key, value in contact.items():
             print(f"  {key}: {value}")
         print()
+
 
 def edit_contact(address_book):
 
@@ -73,6 +76,7 @@ def edit_contact(address_book):
     if not contact_found:
         print("Contact not found.")
 
+
 def delete_contact(address_book):
 
     search_name = input("Enter the first name of the contact to delete: ")
@@ -88,6 +92,7 @@ def delete_contact(address_book):
 
     if not contact_found:
         print("Contact not found.")
+
 
 def add_multiple_contacts(address_book):
 
@@ -109,6 +114,7 @@ def add_multiple_contacts(address_book):
             contact = create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email)
             address_book.append(contact)
             print("Contact added successfully!")
+
 
 def add_address_book(address_books):
 
@@ -134,33 +140,50 @@ def switch_address_book(address_books):
         return None
 
 
-def search_person(address_book):
+def search_or_count_person(address_book):
 
-    print("Search by:")
-    print("1. City")
-    print("2. State")
+    print("Search or Count by:")
+    print("1. Search by City")
+    print("2. Search by State")
+    print("3. Count by City")
+    print("4. Count by State")
 
-    search_choice = input("Choose an option (1/2): ")
+    search_choice = input("Choose an option (1/2/3/4): ")
 
     if search_choice == "1":
         search_city = input("Enter the city to search: ").lower()
-        found_contacts = [contact for contact in address_book
-                          if search_city in contact["City"].lower()]
+        found_contacts = [contact for contact in address_book if search_city in contact["City"].lower()]
+        if found_contacts:
+            print("Found contact(s):")
+            for contact in found_contacts:
+                print(f"  {contact}")
+        else:
+            print("No contacts found.")
+
     elif search_choice == "2":
         search_state = input("Enter the state to search: ").lower()
-        found_contacts = [contact for contact in address_book
-                          if search_state in contact["State"].lower()]
+        found_contacts = [contact for contact in address_book if search_state in contact["State"].lower()]
+        if found_contacts:
+            print("Found contact(s):")
+            for contact in found_contacts:
+                print(f"  {contact}")
+        else:
+            print("No contacts found.")
+
+    elif search_choice == "3":
+        count_city = input("Enter the city to count: ").lower()
+        count = sum(1 for contact in address_book
+                    if count_city in contact["City"].lower())
+        print(f"Number of contacts in '{count_city}': {count}")
+
+    elif search_choice == "4":
+        count_state = input("Enter the state to count: ").lower()
+        count = sum(1 for contact in address_book
+                    if count_state in contact["State"].lower())
+        print(f"Number of contacts in '{count_state}': {count}")
+
     else:
         print("Invalid option.")
-        return
-
-    if found_contacts:
-        print("Found contact(s):")
-        for contact in found_contacts:
-            print(f"  {contact}")
-    else:
-        print("No contacts found.")
-
 
 def main():
 
@@ -176,7 +199,7 @@ def main():
         print("5. Edit an existing contact")
         print("6. Delete a contact")
         print("7. Add multiple contacts")
-        print("8. Search for a contact")
+        print("8. Search or Count contacts")
         print("9. Exit")
 
         choice = input("Choose an option (1/2/3/4/5/6/7/8/9): ")
@@ -214,7 +237,7 @@ def main():
             if current_address_book is None:
                 print("No address book selected. Please switch to an address book first.")
             else:
-                search_person(current_address_book)
+                search_or_count_person(current_address_book)
         elif choice == "9":
             print("Exiting the program.")
             break
