@@ -1,7 +1,8 @@
 '''
-Ability to ensure there is no Duplicate
-Entry of the same Person in a particular
-Address Book
+Ability to search Person
+in a City or State across
+the multiple Address
+Book - Search Result
 
 '''
 
@@ -74,7 +75,6 @@ def edit_contact(address_book):
     if not contact_found:
         print("Contact not found.")
 
-
 def delete_contact(address_book):
 
     search_name = input("Enter the first name of the contact to delete: ")
@@ -104,13 +104,13 @@ def add_multiple_contacts(address_book):
         zip_code = input("Enter zip code: ")
         phone_number = input("Enter phone number: ")
         email = input("Enter email: ")
+
         if any(contact["First Name"].lower() == first_name.lower() and contact["Last Name"].lower() == last_name.lower() for contact in address_book):
             print("The contact is already in the address book. Cannot add duplicate data!")
         else:
             contact = create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email)
             address_book.append(contact)
             print("Contact added successfully!")
-
 
 def add_address_book(address_books):
 
@@ -134,13 +134,27 @@ def switch_address_book(address_books):
         print("Address book not found.")
         return None
 
+def search_person(address_book):
+
+    search_query = input("Enter the search term (it can be a name, address, city, etc.): ").lower()
+
+    found_contacts = [contact for contact in address_book
+                      if any(search_query in str(value).lower() for value in contact.values())]
+
+    if found_contacts:
+        print("Found contact(s):")
+        for contact in found_contacts:
+            print(f"  {contact}")
+    else:
+        print("No contacts found.")
+
 def main():
 
     address_books = {}
     current_address_book = None
 
     while True:
-        print("Address Book System Menu:")
+        print("\nAddress Book System Menu:")
         print("1. Add a new address book")
         print("2. Switch address book")
         print("3. Add a new contact")
@@ -148,9 +162,10 @@ def main():
         print("5. Edit an existing contact")
         print("6. Delete a contact")
         print("7. Add multiple contacts")
-        print("8. Exit")
+        print("8. Search for a contact")
+        print("9. Exit")
 
-        choice = input("Choose an option (1/2/3/4/5/6/7/8): ")
+        choice = input("Choose an option (1/2/3/4/5/6/7/8/9): ")
 
         if choice == "1":
             add_address_book(address_books)
@@ -182,6 +197,11 @@ def main():
             else:
                 add_multiple_contacts(current_address_book)
         elif choice == "8":
+            if current_address_book is None:
+                print("No address book selected. Please switch to an address book first.")
+            else:
+                search_person(current_address_book)
+        elif choice == "9":
             print("Exiting the program.")
             break
         else:
