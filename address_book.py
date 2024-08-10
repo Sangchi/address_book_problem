@@ -1,62 +1,76 @@
 '''
-Ability to create a Contacts in Address 
-Book with first and last names, address, 
-city, state, zip, phone number and 
-email…Ability to create a Contacts in Address 
-Book with first and last names, address, 
-city, state, zip, phone number and 
-email…
+Ability to add a new
+Contact to Address Book
 
 '''
 
-def create_contact(first_name,last_name,address,city,state,zip_code,phone_number,email):
+def create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email):
 
-    new_contact = {
+    return {
         "First Name": first_name,
         "Last Name": last_name,
         "Address": address,
         "City": city,
         "State": state,
         "Zip Code": zip_code,
-        "Phone_Number": phone_number,
+        "Phone Number": phone_number,
         "Email": email
     }
 
-    return new_contact
+def add_contact(address_book):
+
+    print("Adding a new contact...")
+    first_name = input("Enter first name: ")
+    last_name = input("Enter last name: ")
+    address = input("Enter address: ")
+    city = input("Enter city: ")
+    state = input("Enter state: ")
+    zip_code = input("Enter zip code: ")
+    phone_number = input("Enter phone number: ")
+    email = input("Enter email: ")
+
+    contact = create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email)
+    address_book.append(contact)
+    print("Contact added successfully!")
+
+def display_contacts(address_book):
+
+    print("Address Book:")
+    for idx, contact in enumerate(address_book):
+        print(f"Contact {idx + 1}:")
+        for key, value in contact.items():
+            print(f"  {key}: {value}")
+        print()
 
 
 def main():
 
-    first_name=input("enter your first name:")
-    last_name=input("enter your last name:")
-    address=input("enter your address:")
-    city=input("enter you city:")
-    state=input("enter you state:")
-    zip_code=int(input("enter your zip_code:"))
-    phone_number=int(input("enter your phone number:"))
-    gmail=input("enter your gmail:")
-    print(create_contact(first_name,last_name,address,city,state,zip_code,phone_number,gmail))
+    address_book = []
+
+    while True:
+        print("Address Book Menu:")
+        print("1. Add a new contact")
+        print("2. Display all contacts")
+        print("3. Exit")
+
+        choice = input("Choose an option (1/2/3): ")
+
+        if choice == "1":
+            add_contact(address_book)
+        elif choice == "2":
+            display_contacts(address_book)
+        elif choice == "3":
+            print("Exiting the program.")
+            break
+        else:
+            print("Invalid choice Please choose again.")
 
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     main()
 
 
-
-'''
-output-
-
-{'First Name': 'prashant',
-'Last Name': 'chavan',
- 'Address': 'vaishnvai avenue a wing nahre', 
- 'City': 'pune',
- 'State': 'maharastra411041', 
- 'Zip Code': 411041, 
- 'Phone_Number': 9921793120,
- 'Email': 'prashantchavan@gmail.com'}
-
-
-'''
 
 
 
