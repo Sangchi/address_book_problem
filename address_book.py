@@ -1,7 +1,6 @@
 '''
-Ability to delete a 
-person using 
-person's name - Use Console to delete a person
+Ability to add multiple
+person to Address Book
 
 '''
 
@@ -91,6 +90,24 @@ def delete_contact(address_book):
     if not contact_found:
         print("Contact not found.")
 
+def add_multiple_person(address_book):
+
+    data_add_count = int(input("Enter the number of contacts you want to add: "))
+    for i in range(data_add_count):
+        print(f"Adding contact {i + 1}...")
+        first_name = input("Enter first name: ")
+        last_name = input("Enter last name: ")
+        address = input("Enter address: ")
+        city = input("Enter city: ")
+        state = input("Enter state: ")
+        zip_code = input("Enter zip code: ")
+        phone_number = input("Enter phone number: ")
+        email = input("Enter email: ")
+
+        contact = create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email)
+        address_book.append(contact)
+        print("Contact added successfully!")
+
 def main():
 
     address_book = []
@@ -100,9 +117,10 @@ def main():
         print("2. Display all contacts")
         print("3. Edit an existing contact")
         print("4. delete the contact")
-        print("5.exit")
+        print("5.add multiple contact")
+        print("6.exit")
 
-        choice = input("Choose an option (1/2/3/4/5): ")
+        choice = input("Choose an option (1/2/3/4/5/6): ")
 
         if choice == "1":
             add_contact(address_book)
@@ -114,10 +132,13 @@ def main():
             delete_contact(address_book)
 
         elif choice=="5":
+            add_multiple_person(address_book)
+        elif choice=="6":
             print("exit the program")
             break
+
         else:
-            print("Invalid choice. Please choose again.")
+            print("invalid choice !!")
 
 
 if __name__ == '__main__':
