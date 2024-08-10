@@ -1,7 +1,8 @@
 '''
-Ability to sort the entries in
-the address book by City,
-State, or Zip twelve usescase
+Ability to Read or Write
+the Address Book with
+Persons Contact into a
+File using File IO
 
 '''
 
@@ -34,6 +35,21 @@ def add_contact(address_book):
     address_book.append(contact)
     print("Contact added successfully!")
 
+def sort_contacts_by_name(address_book):
+
+    address_book.sort(key=lambda x: (x["First Name"].lower(), x["Last Name"].lower()))
+
+def sort_contacts_by_city(address_book):
+
+    address_book.sort(key=lambda x: x["City"].lower())
+
+def sort_contacts_by_state(address_book):
+
+    address_book.sort(key=lambda x: x["State"].lower())
+
+def sort_contacts_by_zip(address_book):
+
+    address_book.sort(key=lambda x: x["Zip Code"].lower())
 
 def display_contacts(address_book):
 
@@ -105,7 +121,6 @@ def delete_contact(address_book):
         print("Contact not found.")
 
 def add_multiple_contacts(address_book):
-
     data_add_count = int(input("Enter the number of contacts you want to add: "))
     for i in range(data_add_count):
         print(f"Adding contact {i + 1}...")
@@ -123,20 +138,22 @@ def add_multiple_contacts(address_book):
         else:
             contact = create_contact(first_name, last_name, address, city, state, zip_code, phone_number, email)
             address_book.append(contact)
-            print("contact added successfully!")
+            print("Contact added successfully!")
+
 
 def add_address_book(address_books):
 
     name = input("Enter the name for the new address book: ")
     if name in address_books:
-        print("an address book with this name already exists.")
+        print("An address book with this name already exists.")
     else:
         address_books[name] = []
-        print(f"address book '{name}' created successfully!")
+        print(f"Address book '{name}' created successfully!")
+
 
 def switch_address_book(address_books):
 
-    print("available address books:")
+    print("Available address books:")
     for name in address_books:
         print(f"- {name}")
 
@@ -144,9 +161,8 @@ def switch_address_book(address_books):
     if name in address_books:
         return address_books[name]
     else:
-        print("address book not found.")
+        print("Address book not found.")
         return None
-
 
 def search_or_count_person(address_book):
 
@@ -193,23 +209,35 @@ def search_or_count_person(address_book):
     else:
         print("Invalid option.")
 
-def sort_contacts_by_name(address_book):
+def save_address_book_to_file(address_books, filename):
 
-    address_book.sort(key=lambda x: (x["First Name"].lower(), x["Last Name"].lower()))
+    with open(filename, 'w') as file:
+        for book_name, contacts in address_books.items():
+            file.write(f"Book:{book_name}\n")
+            for contact in contacts:
+                file.write(f"{contact['First Name']}|{contact['Last Name']}|{contact['Address']}|{contact['City']}|{contact['State']}|{contact['Zip Code']}|{contact['Phone Number']}|{contact['Email']}\n")
+    print(f"Address book saved to '{filename}'.")
 
 
-def sort_contacts_by_city(address_book):
+def load_address_book_from_file(filename):
 
-    address_book.sort(key=lambda x: x["City"].lower())
-
-
-def sort_contacts_by_state(address_book):
-
-    address_book.sort(key=lambda x: x["State"].lower())
-
-def sort_contacts_by_zip(address_book):
-
-    address_book.sort(key=lambda x: x["Zip Code"].lower())
+    address_books = {}
+    try:
+        with open(filename, 'r') as file:
+            current_book_name = None
+            for line in file:
+                line = line.strip()
+                if line.startswith("Book:"):
+                    current_book_name = line[len("Book:"):].strip()
+                    address_books[current_book_name] = []
+                elif current_book_name and line:
+                    fields = line.split('|')
+                    if len(fields) == 8:
+                        contact = create_contact(*fields)
+                        address_books[current_book_name].append(contact)
+    except FileNotFoundError:
+        print("File not found. Starting with an empty address book.")
+    return address_books
 
 def main():
 
@@ -217,7 +245,7 @@ def main():
     current_address_book = None
 
     while True:
-        print("\nAddress Book System Menu:")
+        print("Address Book System Menu:")
         print("1. Add a new address book")
         print("2. Switch address book")
         print("3. Add a new contact")
@@ -226,9 +254,11 @@ def main():
         print("6. Delete a contact")
         print("7. Add multiple contacts")
         print("8. Search or Count contacts")
-        print("9. Exit")
+        print("9. Save address book to file")
+        print("10. Load address book from file")
+        print("11. Exit")
 
-        choice = input("Choose an option (1/2/3/4/5/6/7/8/9): ")
+        choice = input("Choose an option (1/2/3/4/5/6/7/8/9/10/11): ")
 
         if choice == "1":
             add_address_book(address_books)
@@ -265,6 +295,13 @@ def main():
             else:
                 search_or_count_person(current_address_book)
         elif choice == "9":
+            filename = input("Enter the filename to save: ")
+            save_address_book_to_file(address_books, filename)
+        elif choice == "10":
+            filename = input("Enter the filename to load: ")
+            address_books = load_address_book_from_file(filename)
+            print("Address book loaded successfully.")
+        elif choice == "11":
             print("Exiting the program.")
             break
         else:
