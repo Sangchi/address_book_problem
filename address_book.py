@@ -1,8 +1,6 @@
 '''
-Ability to search Person
-in a City or State across
-the multiple Address
-Book - Search Result
+Ability to view Persons
+by City or State
 
 '''
 
@@ -121,6 +119,7 @@ def add_address_book(address_books):
         address_books[name] = []
         print(f"Address book '{name}' created successfully!")
 
+
 def switch_address_book(address_books):
 
     print("Available address books:")
@@ -134,12 +133,26 @@ def switch_address_book(address_books):
         print("Address book not found.")
         return None
 
+
 def search_person(address_book):
 
-    search_query = input("Enter the search term (it can be a name, address, city, etc.): ").lower()
+    print("Search by:")
+    print("1. City")
+    print("2. State")
 
-    found_contacts = [contact for contact in address_book
-                      if any(search_query in str(value).lower() for value in contact.values())]
+    search_choice = input("Choose an option (1/2): ")
+
+    if search_choice == "1":
+        search_city = input("Enter the city to search: ").lower()
+        found_contacts = [contact for contact in address_book
+                          if search_city in contact["City"].lower()]
+    elif search_choice == "2":
+        search_state = input("Enter the state to search: ").lower()
+        found_contacts = [contact for contact in address_book
+                          if search_state in contact["State"].lower()]
+    else:
+        print("Invalid option.")
+        return
 
     if found_contacts:
         print("Found contact(s):")
@@ -147,6 +160,7 @@ def search_person(address_book):
             print(f"  {contact}")
     else:
         print("No contacts found.")
+
 
 def main():
 
